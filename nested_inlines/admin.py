@@ -5,13 +5,13 @@ from django.contrib.admin.options import (ModelAdmin, InlineModelAdmin,
 try:
     from django.contrib.admin.options import force_unicode
 except ImportError:
-    from django.utils.encoding import force_unicode
+    from django.utils.encoding import force_text as force_unicode
 
 from django.contrib.admin.helpers import InlineAdminFormSet, AdminForm
 from django.utils.translation import ugettext as _
 
-from forms import BaseNestedModelForm, BaseNestedInlineFormSet
-from helpers import AdminErrorList
+from nested_inlines.forms import BaseNestedModelForm, BaseNestedInlineFormSet
+from nested_inlines.helpers import AdminErrorList
 
 class NestedModelAdmin(ModelAdmin):
     class Media:
