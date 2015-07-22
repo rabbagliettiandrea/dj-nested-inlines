@@ -1,11 +1,13 @@
-from django.contrib.admin.helpers import AdminErrorList, InlineAdminFormSet
+from django.contrib.admin.helpers import AdminErrorList as ParentErrorList, InlineAdminFormSet
 from django.utils import six
 
-class AdminErrorList(AdminErrorList):
+class AdminErrorList(ParentErrorList):
     """
     Stores all errors for the form/formsets in an add/change stage view.
     """
     def __init__(self, form, inline_formsets):
+        super(AdminErrorList, self).__init__(form, inline_formsets)
+
         if form.is_bound:
             self.extend(form.errors.values())
             for inline_formset in inline_formsets:
