@@ -1,11 +1,7 @@
 from django.contrib.admin.options import (ModelAdmin, InlineModelAdmin,
     csrf_protect_m, models, transaction, all_valid,
     PermissionDenied, unquote, escape, Http404, reverse)
-# Fix to make Django 1.5 compatible, maintain backwards compatibility
-try:
-    from django.contrib.admin.options import force_unicode
-except ImportError:
-    from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 
 from django.contrib.admin.helpers import InlineAdminFormSet, AdminForm
 from django.utils.translation import ugettext as _
@@ -202,7 +198,7 @@ class NestedModelAdmin(ModelAdmin):
                 media = media + self.wrap_nested_inline_formsets(request, inline, formset)
 
         context = {
-            'title': _('Add %s') % force_unicode(opts.verbose_name),
+            'title': _('Add %s') % force_text(opts.verbose_name),
             'adminform': adminForm,
             'is_popup': "_popup" in request.REQUEST,
             'show_delete': False,
@@ -227,7 +223,7 @@ class NestedModelAdmin(ModelAdmin):
             raise PermissionDenied
 
         if obj is None:
-            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
+            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_text(opts.verbose_name), 'key': escape(object_id)})
 
         if request.method == 'POST' and "_saveasnew" in request.POST:
             return self.add_view(request, form_url=reverse('admin:%s_%s_add' %
@@ -298,7 +294,7 @@ class NestedModelAdmin(ModelAdmin):
                 media = media + self.wrap_nested_inline_formsets(request, inline, formset)
 
         context = {
-            'title': _('Change %s') % force_unicode(opts.verbose_name),
+            'title': _('Change %s') % force_text(opts.verbose_name),
             'adminform': adminForm,
             'object_id': object_id,
             'original': obj,
