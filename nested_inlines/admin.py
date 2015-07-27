@@ -6,8 +6,8 @@ from django.utils.encoding import force_text
 from django.contrib.admin.helpers import InlineAdminFormSet, AdminForm
 from django.utils.translation import ugettext as _
 
-from forms import BaseNestedModelForm, BaseNestedInlineFormSet
-from helpers import AdminErrorList
+from .forms import BaseNestedModelForm, BaseNestedInlineFormSet
+from .helpers import AdminErrorList
 
 class NestedModelAdmin(ModelAdmin):
     class Media:
