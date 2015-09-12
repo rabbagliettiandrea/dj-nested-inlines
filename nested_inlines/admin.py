@@ -138,7 +138,7 @@ class NestedModelAdmin(ModelAdmin):
                 form_validated = False
                 new_object = self.model()
             prefixes = {}
-            for FormSet, inline in zip(self.get_formsets(request), inline_instances):
+            for FormSet, inline in self.get_formsets_with_inlines(request):
                 prefix = FormSet.get_default_prefix()
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
@@ -168,7 +168,7 @@ class NestedModelAdmin(ModelAdmin):
                     initial[k] = initial[k].split(",")
             form = ModelForm(initial=initial)
             prefixes = {}
-            for FormSet, inline in zip(self.get_formsets(request), inline_instances):
+            for FormSet, inline in self.get_formsets_with_inlines(request):
                 prefix = FormSet.get_default_prefix()
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
@@ -242,7 +242,7 @@ class NestedModelAdmin(ModelAdmin):
                 form_validated = False
                 new_object = obj
             prefixes = {}
-            for FormSet, inline in zip(self.get_formsets(request, new_object), inline_instances):
+            for FormSet, inline in self.get_formsets_with_inlines(request, new_object):
                 prefix = FormSet.get_default_prefix()
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
@@ -264,7 +264,7 @@ class NestedModelAdmin(ModelAdmin):
         else:
             form = ModelForm(instance=obj)
             prefixes = {}
-            for FormSet, inline in zip(self.get_formsets(request, obj), inline_instances):
+            for FormSet, inline in self.get_formsets_with_inlines(request, obj):
                 prefix = FormSet.get_default_prefix()
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
