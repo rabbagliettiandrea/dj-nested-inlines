@@ -247,9 +247,11 @@ class NestedModelAdmin(ModelAdmin):
             raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
 
         if request.method == 'POST' and "_saveasnew" in request.POST:
-            return self.add_view(request, form_url=reverse('admin:%s_%s_add' %
-                                    (opts.app_label, opts.module_name),
-                                    current_app=self.admin_site.name))
+            return self.add_view(
+                request,
+                form_url=reverse('admin:{app}_{model}_add'.format(**self._get_model_info()),
+                                 current_app=self.admin_site.name)
+            )
 
         ModelForm = self.get_form(request, obj)
         formsets = []
@@ -337,6 +339,16 @@ class NestedModelAdmin(ModelAdmin):
                 self.get_formsets(request, obj),
                 self.get_inline_instances(request, obj)
             )
+    def _get_model_info(self):
+        # module_name was renamed to model_name in Django 1.7
+        if hasattr(self.model._meta, 'model_name'):
+            model = self.model._meta.model_name
+        else:
+            model = self.model._meta.module_name
+        return {
+            'app': self.model._meta.app_label,
+            'model': model
+        }
 
 
 class NestedInlineModelAdmin(InlineModelAdmin):
